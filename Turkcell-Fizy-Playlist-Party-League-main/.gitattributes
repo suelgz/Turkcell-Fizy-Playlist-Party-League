@@ -1,4 +1,2 @@
-# GitHub Linguist should reflect the Python/Flask engine as the core project.
-# Dashboard assets are a thin presentation layer for backend-prepared JSON.
-static/** linguist-vendored
-templates/** linguist-vendored
+# Keep the tiny deployment Procfile out of the language bar.
+Procfile linguist-vendored

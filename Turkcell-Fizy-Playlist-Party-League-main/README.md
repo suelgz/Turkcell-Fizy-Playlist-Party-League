@@ -125,4 +125,4 @@ No React, database, authentication system, TypeScript, or frontend build tooling
 
 ## GitHub Language Stats
 
-The repository is configured with `.gitattributes` so GitHub Linguist treats `static/` and `templates/` as dashboard presentation assets, not the core implementation. This keeps the language bar aligned with the actual project architecture: Python/Flask contains the gamification engine, while JavaScript, CSS, and HTML only visualize backend-prepared data.
+The repository keeps JavaScript, CSS, and HTML visible in GitHub language stats because they are part of the dashboard output. The architecture is still backend-driven: Python/Flask contains the gamification engine, while JavaScript, CSS, and HTML visualize backend-prepared data.
