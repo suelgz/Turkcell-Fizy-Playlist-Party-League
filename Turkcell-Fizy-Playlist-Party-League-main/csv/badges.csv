@@ -1,0 +1,5 @@
+badge_id,badge_name,condition
+b1,Bronz Rozeti,total_points >= 50
+b2,Gümüş Rozeti,total_points >= 150
+b3,Altın Rozeti,total_points >= 300
+b4,Platin Rozeti,total_points >= 500

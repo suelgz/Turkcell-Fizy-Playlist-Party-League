@@ -1,0 +1,7 @@
+challenge_id,challenge_name,challenge_type,condition,reward_points,priority,is_active
+ch1,Günlük Dinleyici,daily,listen_minutes_today >= 30,50,1,True
+ch2,Müzik Maratonu,daily,listen_minutes_today >= 60,120,2,True
+ch3,Keşif Ustası,daily,unique_tracks_today >= 10,80,3,True
+ch4,Haftalık Dinleyici,weekly,listen_minutes_7d >= 200,200,4,True
+ch5,Paylaşım Şampiyonu,weekly,shares_7d >= 5,150,5,True
+ch6,Çılgın Seri,streak,listen_streak_days >= 5,300,6,True
