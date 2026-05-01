@@ -36,9 +36,9 @@ class Badge:
 
 
 def load_data():
-   
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    csv_dir = os.path.join(base_dir, 'csv')
+    project_dir = os.path.dirname(base_dir)
+    csv_dir = os.path.join(project_dir, 'csv')
     
     users_df = pd.read_csv(os.path.join(csv_dir, 'users.csv'))
     activity_df = pd.read_csv(os.path.join(csv_dir, 'activity_events.csv'))
@@ -68,9 +68,9 @@ def load_data():
             row['challenge_name'],
             row['challenge_type'],
             row['condition'],
-            row['reward_points'],
-            row['priority'],
-            row['is_active']
+            int(row['reward_points']),
+            int(row['priority']),
+            str(row['is_active']).lower() == 'true'
         )
         for _, row in challenges_df.iterrows()
     ]

@@ -7,14 +7,16 @@ from badges import award_badges
 from notifications import generate_notifications
 import pandas as pd
 
-def process_system(as_of_date: pd.Timestamp = None) -> dict:
+def process_system(as_of_date: pd.Timestamp = None, data_bundle=None) -> dict:
+    """Run the CSV-backed gamification engine and return JSON-ready results."""
+    if data_bundle is None:
+        users, activities, challenges, badges = load_data()
+    else:
+        users, activities, challenges, badges = data_bundle
 
-   
-    users, activities, challenges, badges = load_data()
-    
-   
     if as_of_date is None:
         as_of_date = max(a.date for a in activities) if activities else pd.Timestamp.today()
+    as_of_date = pd.Timestamp(as_of_date).normalize()
     
     user_states = compute_all_user_states(users, as_of_date, activities)
     

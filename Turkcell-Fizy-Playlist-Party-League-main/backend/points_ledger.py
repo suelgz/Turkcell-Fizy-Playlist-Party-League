@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import List
 import datetime
 import uuid
+from collections import Counter
 
 @dataclass
 class LedgerEntry:
@@ -28,3 +29,22 @@ def build_ledger_from_awards(awards: List) -> List[LedgerEntry]:
         ledger.append(entry)
     return ledger
 
+
+def summarize_ledger(ledger: List[LedgerEntry], user_id: str = None) -> dict:
+    """Create a JSON-friendly points ledger summary."""
+    def get_value(entry, field):
+        if isinstance(entry, dict):
+            return entry[field]
+        return getattr(entry, field)
+
+    entries = [
+        entry for entry in ledger
+        if user_id is None or get_value(entry, 'user_id') == user_id
+    ]
+    source_counts = Counter(get_value(entry, 'source') for entry in entries)
+
+    return {
+        'entries': int(len(entries)),
+        'total_points': int(sum(get_value(entry, 'points_delta') for entry in entries)),
+        'sources': dict(source_counts),
+    }

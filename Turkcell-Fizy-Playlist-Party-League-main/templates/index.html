@@ -4,15 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fizy Playlist Party League</title>
-  <meta name="description" content="Turkcell Fizy gamification engine — real-time player rankings, challenge awards, badge progression and listening analytics." />
+  <meta name="description" content="Python/Flask backend-driven gamification engine for music streaming engagement analytics." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-
-  <!-- ── TOPBAR ─────────────────────────────────────────────── -->
   <header class="topbar">
     <div class="topbar-brand">
       <div class="brand-logo">
@@ -23,7 +21,7 @@
       </div>
       <div class="brand-text">
         <h1>Fizy Playlist Party League</h1>
-        <p>Gamification Engine &mdash; Live Dashboard</p>
+        <p>Python/Flask Backend Gamification Engine</p>
       </div>
     </div>
 
@@ -36,142 +34,131 @@
     </div>
   </header>
 
-  <!-- ── HERO KPIs ───────────────────────────────────────────── -->
   <div class="hero">
     <div class="kpi-grid">
-
       <div class="kpi" id="kpi-users">
-        <div class="kpi-label">Active Players</div>
+        <div class="kpi-label">Backend Active Users</div>
         <div class="kpi-value skeleton" id="kpiUsers" style="height:36px;width:40px">&nbsp;</div>
         <div class="kpi-bar"></div>
       </div>
 
       <div class="kpi" id="kpi-minutes">
-        <div class="kpi-label">Total Listening</div>
+        <div class="kpi-label">CSV Listening Minutes</div>
         <div class="kpi-value skeleton" id="kpiMinutes" style="height:36px;width:80px">&nbsp;</div>
         <div class="kpi-sub" id="kpiMinutesSub"></div>
         <div class="kpi-bar"></div>
       </div>
 
       <div class="kpi" id="kpi-points">
-        <div class="kpi-label">Points Distributed</div>
+        <div class="kpi-label">Points Ledger Output</div>
         <div class="kpi-value skeleton" id="kpiPoints" style="height:36px;width:60px">&nbsp;</div>
         <div class="kpi-bar"></div>
       </div>
 
       <div class="kpi" id="kpi-challenges">
-        <div class="kpi-label">Challenges Won</div>
+        <div class="kpi-label">Challenge Awards</div>
         <div class="kpi-value skeleton" id="kpiChallenges" style="height:36px;width:40px">&nbsp;</div>
         <div class="kpi-sub" id="kpiGenre"></div>
         <div class="kpi-bar"></div>
       </div>
-
     </div>
   </div>
 
-  <!-- ── MAIN LAYOUT ─────────────────────────────────────────── -->
   <div class="layout">
-
-    <!-- LEFT: Player Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
-        <span class="title">Players</span>
+        <span class="title">Engine Players</span>
         <span class="player-count" id="playerCount">0</span>
       </div>
       <div class="search-wrap">
-        <input class="search-input" id="userSearch" placeholder="Search by name or ID…" autocomplete="off" />
+        <input class="search-input" id="userSearch" placeholder="Search by name or ID..." autocomplete="off" />
       </div>
       <div class="player-list" id="playerList"></div>
     </aside>
 
-    <!-- RIGHT: Main Panel -->
     <main class="main-panel">
-
       <div class="panel-header">
-        <h2 class="panel-title" id="panelTitle">League Overview</h2>
+        <h2 class="panel-title" id="panelTitle">{{ dashboard_title }}</h2>
         <div class="selected-badge hidden" id="selectedBadge">
           <span class="dot"></span>
-          <span id="selectedName">—</span>
+          <span id="selectedName">-</span>
         </div>
       </div>
 
       <div class="tab-bar">
-        <button class="tab active" data-tab="overview">Overview</button>
-        <button class="tab" data-tab="leaderboard">Leaderboard</button>
+        <button class="tab active" data-tab="overview">Player Output</button>
+        <button class="tab" data-tab="leaderboard">Leaderboard Ranking</button>
       </div>
 
-      <!-- ── OVERVIEW TAB ──────────────────────────────────── -->
       <div class="tab-content active" id="tab-overview">
-
-        <!-- Empty state (no player selected) -->
         <div class="empty-state" id="emptyState">
-          <div class="empty-icon">🎧</div>
+          <div class="empty-icon">FZ</div>
           <h3>Select a Player</h3>
-          <p>Pick any player from the sidebar to see their listening stats, active challenges, badges and more.</p>
+          <p>Choose a player to inspect backend-generated engagement metrics, challenge results, badges, and ledger output.</p>
         </div>
 
-        <!-- Player detail (shown after selection) -->
         <div class="player-detail hidden" id="playerDetail">
-
-          <!-- Stats -->
           <div class="stats-row">
             <div class="stat-block">
-              <div class="stat-label">Today's Listening</div>
-              <div class="stat-value" id="statToday">—</div>
+              <div class="stat-label">Backend-Generated Engagement Metrics</div>
+              <div class="stat-value" id="statToday">-</div>
               <div class="stat-sub" id="statTodaySub"></div>
             </div>
             <div class="stat-block">
-              <div class="stat-label">Weekly Listening</div>
-              <div class="stat-value" id="stat7d">—</div>
+              <div class="stat-label">Weekly Engagement Metrics</div>
+              <div class="stat-value" id="stat7d">-</div>
               <div class="stat-sub" id="stat7dSub"></div>
             </div>
             <div class="stat-block">
-              <div class="stat-label">Streak</div>
-              <div class="stat-value" id="statStreak">—</div>
+              <div class="stat-label">Listening Streak</div>
+              <div class="stat-value" id="statStreak">-</div>
               <div class="streak-bar"><div class="streak-bar-fill" id="streakFill" style="width:0%"></div></div>
             </div>
           </div>
 
-          <!-- Charts -->
           <div class="charts-row">
             <div class="chart-card">
-              <div class="chart-title">7-Day Listening Trend (minutes)</div>
+              <div class="chart-title">Backend Trend Data</div>
               <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
             </div>
             <div class="chart-card">
-              <div class="chart-title">Genre Breakdown</div>
+              <div class="chart-title">Backend Genre Aggregation</div>
               <div class="chart-wrap"><canvas id="genreChart"></canvas></div>
             </div>
           </div>
 
-          <!-- Active Challenge -->
           <div class="section">
-            <div class="section-label">Active Challenge</div>
+            <div class="section-label">Challenge Evaluation Results</div>
             <div id="challengeBlock"></div>
           </div>
 
-          <!-- Achievements -->
           <div class="section">
-            <div class="section-label">Achievements</div>
+            <div class="section-label">Points Ledger Summary</div>
+            <div class="engine-summary" id="ledgerBlock"></div>
+          </div>
+
+          <div class="section">
+            <div class="section-label">Player Insight</div>
+            <div class="engine-summary" id="insightBlock"></div>
+          </div>
+
+          <div class="section">
+            <div class="section-label">Badge Awarding Output</div>
             <div class="badges-grid" id="badgesGrid"></div>
           </div>
 
-          <!-- Notifications -->
           <div class="section">
-            <div class="section-label">Notifications</div>
+            <div class="section-label">Notification Output</div>
             <div class="notif-list" id="notifList"></div>
           </div>
-
         </div>
       </div>
 
-      <!-- ── LEADERBOARD TAB ──────────────────────────────── -->
       <div class="tab-content" id="tab-leaderboard">
         <div class="lb-content">
           <div class="lb-list" id="lbList"></div>
         </div>
       </div>
-
     </main>
   </div>
 

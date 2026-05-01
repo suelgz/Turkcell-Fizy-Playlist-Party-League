@@ -1,0 +1,4 @@
+# GitHub Linguist should reflect the Python/Flask engine as the core project.
+# Dashboard assets are a thin presentation layer for backend-prepared JSON.
+static/** linguist-vendored
+templates/** linguist-vendored
