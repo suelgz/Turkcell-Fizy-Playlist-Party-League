@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fizy Playlist Party League</title>
-  <meta name="description" content="Python/Flask backend-driven gamification engine for music streaming engagement analytics." />
+  <meta name="description" content="A Fizy community leaderboard for music listening challenges, streaks, and points." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
       </div>
       <div class="brand-text">
         <h1>Fizy Playlist Party League</h1>
-        <p>Python/Flask Backend Gamification Engine</p>
+        <p>Fizy Community League</p>
       </div>
     </div>
 
@@ -37,26 +37,26 @@
   <div class="hero">
     <div class="kpi-grid">
       <div class="kpi" id="kpi-users">
-        <div class="kpi-label">Backend Active Users</div>
+        <div class="kpi-label">Active Listeners</div>
         <div class="kpi-value skeleton" id="kpiUsers" style="height:36px;width:40px">&nbsp;</div>
         <div class="kpi-bar"></div>
       </div>
 
       <div class="kpi" id="kpi-minutes">
-        <div class="kpi-label">CSV Listening Minutes</div>
+        <div class="kpi-label">Listening Time</div>
         <div class="kpi-value skeleton" id="kpiMinutes" style="height:36px;width:80px">&nbsp;</div>
         <div class="kpi-sub" id="kpiMinutesSub"></div>
         <div class="kpi-bar"></div>
       </div>
 
       <div class="kpi" id="kpi-points">
-        <div class="kpi-label">Points Ledger Output</div>
+        <div class="kpi-label">Points Earned</div>
         <div class="kpi-value skeleton" id="kpiPoints" style="height:36px;width:60px">&nbsp;</div>
         <div class="kpi-bar"></div>
       </div>
 
       <div class="kpi" id="kpi-challenges">
-        <div class="kpi-label">Challenge Awards</div>
+        <div class="kpi-label">Challenges Completed</div>
         <div class="kpi-value skeleton" id="kpiChallenges" style="height:36px;width:40px">&nbsp;</div>
         <div class="kpi-sub" id="kpiGenre"></div>
         <div class="kpi-bar"></div>
@@ -67,11 +67,11 @@
   <div class="layout">
     <aside class="sidebar">
       <div class="sidebar-header">
-        <span class="title">Engine Players</span>
+        <span class="title">Listeners</span>
         <span class="player-count" id="playerCount">0</span>
       </div>
       <div class="search-wrap">
-        <input class="search-input" id="userSearch" placeholder="Search by name or ID..." autocomplete="off" />
+        <input class="search-input" id="userSearch" placeholder="Search listeners..." autocomplete="off" />
       </div>
       <div class="player-list" id="playerList"></div>
     </aside>
@@ -86,26 +86,26 @@
       </div>
 
       <div class="tab-bar">
-        <button class="tab active" data-tab="overview">Player Output</button>
-        <button class="tab" data-tab="leaderboard">Leaderboard Ranking</button>
+        <button class="tab active" data-tab="overview">Listener Profile</button>
+        <button class="tab" data-tab="leaderboard">Leaderboard</button>
       </div>
 
       <div class="tab-content active" id="tab-overview">
         <div class="empty-state" id="emptyState">
           <div class="empty-icon">FZ</div>
-          <h3>Select a Player</h3>
-          <p>Choose a player to inspect backend-generated engagement metrics, challenge results, badges, and ledger output.</p>
+          <h3>Select a Listener</h3>
+          <p>Choose a listener to see their music streak, favorite sound, points, and recent challenge activity.</p>
         </div>
 
         <div class="player-detail hidden" id="playerDetail">
           <div class="stats-row">
             <div class="stat-block">
-              <div class="stat-label">Backend-Generated Engagement Metrics</div>
+              <div class="stat-label">Today's Listening</div>
               <div class="stat-value" id="statToday">-</div>
               <div class="stat-sub" id="statTodaySub"></div>
             </div>
             <div class="stat-block">
-              <div class="stat-label">Weekly Engagement Metrics</div>
+              <div class="stat-label">This Week</div>
               <div class="stat-value" id="stat7d">-</div>
               <div class="stat-sub" id="stat7dSub"></div>
             </div>
@@ -118,37 +118,37 @@
 
           <div class="charts-row">
             <div class="chart-card">
-              <div class="chart-title">Backend Trend Data</div>
+              <div class="chart-title">Listening Rhythm</div>
               <div class="chart-wrap"><canvas id="trendChart"></canvas></div>
             </div>
             <div class="chart-card">
-              <div class="chart-title">Backend Genre Aggregation</div>
+              <div class="chart-title">Top Genres</div>
               <div class="chart-wrap"><canvas id="genreChart"></canvas></div>
             </div>
           </div>
 
           <div class="section">
-            <div class="section-label">Challenge Evaluation Results</div>
+            <div class="section-label">Featured Challenge</div>
             <div id="challengeBlock"></div>
           </div>
 
           <div class="section">
-            <div class="section-label">Points Ledger Summary</div>
+            <div class="section-label">Points Earned</div>
             <div class="engine-summary" id="ledgerBlock"></div>
           </div>
 
           <div class="section">
-            <div class="section-label">Player Insight</div>
+            <div class="section-label">Listener Highlights</div>
             <div class="engine-summary" id="insightBlock"></div>
           </div>
 
           <div class="section">
-            <div class="section-label">Badge Awarding Output</div>
+            <div class="section-label">Badges</div>
             <div class="badges-grid" id="badgesGrid"></div>
           </div>
 
           <div class="section">
-            <div class="section-label">Notification Output</div>
+            <div class="section-label">Recent Updates</div>
             <div class="notif-list" id="notifList"></div>
           </div>
         </div>
@@ -166,3 +166,4 @@
   <script src="/static/app.js"></script>
 </body>
 </html>
+

@@ -1,4 +1,4 @@
-﻿# Turkcell Fizy Playlist Party League
+# Turkcell Fizy Playlist Party League
 
 A lightweight Python/Flask gamification dashboard built for a Turkcell Fizy hackathon. The app reads CSV demo data, calculates engagement metrics, evaluates challenges, creates a points ledger, awards badges, and serves a simple HTML/CSS/vanilla JavaScript dashboard.
 

@@ -1,4 +1,4 @@
-﻿import logging
+import logging
 import os
 import pandas as pd
 from flask import Flask, jsonify, render_template, request
@@ -38,7 +38,7 @@ def _json_error(message: str, status_code: int = 500, exc: Exception | None = No
 def home():
     return render_template(
         'index.html',
-        dashboard_title='Python/Flask Gamification Engine Output',
+        dashboard_title='Community Rankings',
     )
 
 
@@ -130,5 +130,6 @@ def handle_server_error(error):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
 
 

@@ -1,4 +1,4 @@
-﻿from collections import Counter
+from collections import Counter
 
 from .analytics_service import build_platform_stats, resolve_as_of_date, activities_until
 from .data_loader import load_data
@@ -104,10 +104,12 @@ def _format_notification(notification):
 
 def _build_player_rows(users, results):
     states = _state_map(results)
+    user_lookup = {user.user_id: user for user in users}
     rows = []
 
     for entry in results['leaderboard']:
         state = states.get(entry['user_id'], {})
+        user = user_lookup.get(entry['user_id'])
         rows.append({
             'user_id': entry['user_id'],
             'name': entry['name'],
@@ -115,6 +117,10 @@ def _build_player_rows(users, results):
             'total_points': int(entry['total_points']),
             'weekly_listening_minutes': int(state.get('listen_minutes_7d', 0)),
             'streak_days': int(state.get('listen_streak_days', 0)),
+            'top_genre': entry.get('top_genre') or getattr(user, 'featured_genre', '') or '-',
+            'completed_challenges': int(
+                entry.get('completed_challenges') or getattr(user, 'completed_challenges', 0) or 0
+            ),
             'is_active': bool(state.get('listen_minutes_7d', 0) > 0),
         })
 
@@ -125,14 +131,15 @@ def _build_player_rows(users, results):
                 'user_id': user.user_id,
                 'name': user.name,
                 'rank': None,
-                'total_points': 0,
+                'total_points': int(getattr(user, 'community_points', 0) or 0),
                 'weekly_listening_minutes': 0,
                 'streak_days': 0,
+                'top_genre': getattr(user, 'featured_genre', '') or '-',
+                'completed_challenges': int(getattr(user, 'completed_challenges', 0) or 0),
                 'is_active': False,
             })
 
     return rows
-
 
 def build_dashboard(as_of_date=None) -> dict:
     """Return the full dashboard payload consumed by static/app.js."""
@@ -164,10 +171,10 @@ def _build_player_insights(user_id, user, activities, results, as_of_date):
 
     return {
         'player': user.name,
-        'favorite_genre': genre_counts.most_common(1)[0][0] if genre_counts else '-',
+        'favorite_genre': getattr(user, 'featured_genre', '') or (genre_counts.most_common(1)[0][0] if genre_counts else '-'),
         'total_listening_minutes': int(sum(a.listen_minutes for a in scoped_activities)),
         'total_shares': int(sum(a.shares for a in scoped_activities)),
-        'challenge_awards': int(len(user_awards)),
+        'challenge_awards': int(getattr(user, 'completed_challenges', 0) or len(user_awards)),
         'badges_awarded': int(len(user_badges)),
     }
 
@@ -186,7 +193,7 @@ def build_user_detail(user_id, as_of_date=None) -> dict:
 
     state = states.get(user_id, {})
     rank_entry = ranks.get(user_id, {})
-    total_points = _total_points_for_user(user_id, results)
+    total_points = int(rank_entry.get('total_points') or _total_points_for_user(user_id, results))
     challenge_awards = [
         _format_challenge_award(award, challenge_lookup)
         for award in results['challenge_awards']
@@ -214,6 +221,9 @@ def build_user_detail(user_id, as_of_date=None) -> dict:
         100,
         int(metrics.get('listen_streak_days', 0)) * 20,
     )
+    metrics['completed_challenges'] = int(getattr(user, 'completed_challenges', 0) or len(challenge_awards))
+    metrics['top_genre'] = getattr(user, 'featured_genre', '') or '-'
+    ledger_summary['total_points'] = total_points
 
     return {
         'profile': {
@@ -222,6 +232,8 @@ def build_user_detail(user_id, as_of_date=None) -> dict:
             'rank': rank_entry.get('rank'),
             'total_points': total_points,
             'as_of_date': resolved_date.date().isoformat(),
+            'top_genre': getattr(user, 'featured_genre', '') or '-',
+            'completed_challenges': int(getattr(user, 'completed_challenges', 0) or len(challenge_awards)),
         },
         'metrics': metrics,
         'challenge_awards': challenge_awards,
@@ -232,4 +244,5 @@ def build_user_detail(user_id, as_of_date=None) -> dict:
         'genres': compute_genre_breakdown(user_id, activities, resolved_date),
         'insights': _build_player_insights(user_id, user, activities, results, resolved_date),
     }
+
 

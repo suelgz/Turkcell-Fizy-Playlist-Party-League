@@ -1,4 +1,4 @@
-﻿from collections import Counter, defaultdict
+from collections import Counter, defaultdict
 
 from .analytics_service import activities_until
 
@@ -30,7 +30,9 @@ def build_platform_insights(users, activities, results, as_of_date) -> dict:
 
     active_users = len(listening_by_user)
     total_listening = sum(listening_by_user.values())
-    total_points = sum(entry['points_delta'] for entry in results.get('points_ledger', []))
+    total_points = sum(int(getattr(user, 'community_points', 0) or 0) for user in users)
+    if not total_points:
+        total_points = sum(entry['points_delta'] for entry in results.get('points_ledger', []))
 
     most_active_id, most_active_minutes = (None, 0)
     if listening_by_user:
