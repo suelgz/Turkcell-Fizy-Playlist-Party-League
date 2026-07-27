@@ -1,11 +1,11 @@
-user_id,name
-u1,Ahmet Yılmaz
-u2,Elif Kaya
-u3,Mehmet Demir
-u4,Zeynep Çelik
-u5,Burak Aydın
-u6,Selin Şahin
-u7,Emre Arslan
-u8,Hülya Koç
-u9,Kerem Doğan
-u10,Ayşe Öztürk
+user_id,name,community_points,featured_genre,completed_challenges
+u1,Ahmet Yılmaz,1280,Pop,14
+u2,Elif Kaya,980,Hip-Hop,11
+u3,Mehmet Demir,870,Rock,10
+u4,Zeynep Çelik,760,Classical,9
+u5,Burak Aydın,655,Electronic,8
+u6,Selin Şahin,590,Turkish Pop,7
+u7,Emre Arslan,480,Jazz,6
+u8,Hülya Koç,420,Pop,5
+u9,Can Aksoy,350,Rock,4
+u10,Ayşe Öztürk,1145,Pop,13

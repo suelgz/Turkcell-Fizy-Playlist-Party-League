@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
       value => `${Math.round(value).toLocaleString()} min`,
     );
     document.getElementById('kpiMinutesSub').textContent =
-      `${Math.round((stats.total_listening_minutes || 0) / 60).toLocaleString()} hours processed`;
+      `${Math.round((stats.total_listening_minutes || 0) / 60).toLocaleString()} hours played`;
     document.getElementById('kpi-minutes').classList.add('loaded');
 
     animateCounter(
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('kpi-points').classList.add('loaded');
 
     animateCounter(document.getElementById('kpiChallenges'), stats.total_challenges_completed || 0);
-    document.getElementById('kpiGenre').textContent = `Top genre: ${stats.top_genre || '-'}`;
+    document.getElementById('kpiGenre').textContent = `Most played: ${stats.top_genre || '-'}`;
     document.getElementById('kpi-challenges').classList.add('loaded');
   }
 
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     playerCount.textContent = users.length;
 
     if (!users.length) {
-      playerList.innerHTML = '<div style="padding:20px;color:var(--muted);font-size:12px;">No players found</div>';
+      playerList.innerHTML = '<div style="padding:20px;color:var(--muted);font-size:12px;">No listeners found</div>';
       return;
     }
 
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="player-avatar" style="background:${avatarColor(user.user_id)}">${initial}</div>
         <div class="player-info">
           <div class="player-name">${user.name || user.user_id}</div>
-          <div class="player-id">Rank ${user.rank || '-'} | ${user.user_id}</div>
+          <div class="player-id">${user.top_genre || '-'} | ${user.streak_days || 0} day streak</div>
         </div>
         <div class="score-chip ${hasScore ? '' : 'dim'}">${user.total_points}</div>
       `;
@@ -206,15 +206,15 @@ document.addEventListener('DOMContentLoaded', () => {
     renderChallengeAwards(detail.challenge_awards || []);
 
     renderSummaryBlock(document.getElementById('ledgerBlock'), [
-      { label: 'Ledger Entries', value: ledger.entries || 0 },
+      { label: 'Challenges Completed', value: metrics.completed_challenges || ledger.entries || 0 },
       { label: 'Total Points', value: `${ledger.total_points || 0} pts` },
-      { label: 'Source', value: Object.keys(ledger.sources || {}).join(', ') || '-' },
+      { label: 'Top Genre', value: metrics.top_genre || insights.favorite_genre || '-' },
     ]);
 
     renderSummaryBlock(document.getElementById('insightBlock'), [
-      { label: 'Favorite Genre', value: insights.favorite_genre || '-' },
-      { label: 'Total Listening', value: `${insights.total_listening_minutes || 0} min` },
-      { label: 'Total Shares', value: insights.total_shares || 0 },
+      { label: 'Favorite Sound', value: insights.favorite_genre || '-' },
+      { label: 'Listening Time', value: `${insights.total_listening_minutes || 0} min` },
+      { label: 'Shares', value: insights.total_shares || 0 },
     ]);
 
     renderBadges(detail.badges || []);
@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const award = awards[0];
 
     if (!award) {
-      block.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;">No challenge awarded for this engine run.</div>';
+      block.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;">No challenge completed for this date yet.</div>';
       return;
     }
 
@@ -235,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="challenge-selected">
         <div>
           <div class="challenge-name">${award.selected_challenge_name}</div>
-          <div class="challenge-meta">${award.triggered_count} triggered | ${award.suppressed_count} suppressed by backend rules</div>
+          <div class="challenge-meta">${award.triggered_count} available | ${award.suppressed_count} waiting</div>
           ${suppressed.length ? `<div class="challenge-suppressed">
             ${suppressed.map(challenge => `<span class="challenge-tag">${challenge.challenge_name}</span>`).join('')}
           </div>` : ''}
@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
     grid.innerHTML = '';
 
     if (!badges.length) {
-      grid.innerHTML = '<div style="color:var(--muted);font-size:13px;">No badges awarded by the backend yet.</div>';
+      grid.innerHTML = '<div style="color:var(--muted);font-size:13px;">No badges yet.</div>';
       return;
     }
 
@@ -267,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
     notifList.innerHTML = '';
 
     if (!notifications.length) {
-      notifList.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;">No notifications generated.</div>';
+      notifList.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:10px 0;">No recent updates.</div>';
       return;
     }
 
@@ -309,13 +309,13 @@ document.addEventListener('DOMContentLoaded', () => {
         datasets: [{
           data: trend.map(row => row.minutes),
           backgroundColor: trend.map(row =>
-            row.minutes > 0 ? 'rgba(245,197,24,0.70)' : 'rgba(255,255,255,0.05)'
+            row.minutes > 0 ? 'rgba(82, 183, 136, 0.72)' : 'rgba(255,255,255,0.05)'
           ),
-          borderColor: 'rgba(245,197,24,0.9)',
+          borderColor: 'rgba(82, 183, 136, 0.85)',
           borderWidth: 1,
           borderRadius: 5,
           borderSkipped: false,
-          hoverBackgroundColor: 'rgba(245,197,24,0.95)',
+          hoverBackgroundColor: 'rgba(82, 183, 136, 0.95)',
         }],
       },
       options: {
@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const colors = ['#f5c518', '#9d71ff', '#22d3a5', '#ff6b8a', '#2563eb'];
+    const colors = ['#52b788', '#8f7cf6', '#f5c518', '#f472b6', '#60a5fa'];
     genreChart = new Chart(genreCtx, {
       type: 'doughnut',
       data: {
@@ -401,27 +401,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderLeaderboard(rows) {
     lbList.innerHTML = '';
-    const maxPoints = rows.length ? Number(rows[0].total_points) || 1 : 1;
 
-    rows.forEach((row, index) => {
+    rows.forEach(row => {
       const initial = (row.name || row.user_id).charAt(0).toUpperCase();
-      const barWidth = maxPoints > 0 ? Math.round((row.total_points / maxPoints) * 100) : 0;
       const el = document.createElement('div');
+      const completed = Number(row.completed_challenges || 0);
+      const challengeText = `${completed} challenge${completed === 1 ? '' : 's'}`;
 
       el.className = 'lb-row';
       el.dataset.id = row.user_id;
-      el.style.animationDelay = `${index * 0.03}s`;
       el.innerHTML = `
         <div class="lb-rank-cell ${row.rank <= 3 ? `r${row.rank}` : ''}">#${row.rank}</div>
         <div class="player-avatar" style="background:${avatarColor(row.user_id)};width:34px;height:34px;font-size:13px;">${initial}</div>
         <div class="lb-info">
           <div class="lb-name">${row.name || row.user_id}</div>
-          <div class="lb-id">${row.user_id}</div>
+          <div class="lb-id">${row.top_genre || '-'} | ${challengeText}</div>
         </div>
-        <div class="lb-bar-wrap">
-          <div class="lb-bar-fill" style="width:${barWidth}%"></div>
-        </div>
-        <div class="lb-score">${row.total_points}<span class="pts"> pts</span></div>
+        <div class="lb-score">${Number(row.total_points || 0).toLocaleString()}<span class="pts"> pts</span></div>
       `;
 
       el.addEventListener('click', () => {
@@ -459,3 +455,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   refreshAll();
 });
+
