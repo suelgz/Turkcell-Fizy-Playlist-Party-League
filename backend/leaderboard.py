@@ -1,5 +1,7 @@
-from dataclasses import dataclass
+﻿from dataclasses import dataclass
 from typing import List
+
+from .points_ledger import get_total_points
 
 @dataclass
 class LeaderboardEntry:
@@ -10,7 +12,6 @@ class LeaderboardEntry:
 
 def generate_leaderboard(users: List, ledger: List) -> List[LeaderboardEntry]:
     """Generate leaderboard sorted by total points descending."""
-    from points_ledger import get_total_points
     user_map = {u.user_id: getattr(u, 'name', u.user_id) for u in users}
     user_points = []
     for user in users:
@@ -21,3 +22,4 @@ def generate_leaderboard(users: List, ledger: List) -> List[LeaderboardEntry]:
         LeaderboardEntry(i + 1, u['user_id'], u['name'], u['total_points'])
         for i, u in enumerate(user_points)
     ]
+

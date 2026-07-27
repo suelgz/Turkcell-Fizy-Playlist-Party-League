@@ -1,7 +1,5 @@
-import logging
+﻿import logging
 import os
-import sys
-
 import pandas as pd
 from flask import Flask, jsonify, render_template, request
 
@@ -9,11 +7,8 @@ from flask import Flask, jsonify, render_template, request
 BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_DIR = os.path.dirname(BACKEND_DIR)
 
-if BACKEND_DIR not in sys.path:
-    sys.path.insert(0, BACKEND_DIR)
-
-from dashboard_service import build_dashboard, build_user_detail
-from process_system import process_system
+from .dashboard_service import build_dashboard, build_user_detail
+from .process_system import process_system
 
 
 app = Flask(
@@ -109,7 +104,7 @@ def api_challenges():
     if request.method == 'POST':
         return jsonify({
             'message': 'Challenge creation is mocked in this hackathon prototype.',
-            'data': request.json or {},
+            'data': request.get_json(silent=True) or {},
         }), 201
 
     try:
@@ -135,3 +130,5 @@ def handle_server_error(error):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+

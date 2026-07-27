@@ -1,6 +1,6 @@
-from collections import Counter, defaultdict
+﻿from collections import Counter, defaultdict
 
-from analytics_service import activities_until
+from .analytics_service import activities_until
 
 
 def _user_payload(user_id, user_map, value_key, value):
@@ -90,3 +90,5 @@ def build_platform_insights(users, activities, results, as_of_date) -> dict:
             top_weekly_state.get('listen_minutes_7d', 0) if top_weekly_state else 0,
         ),
     }
+
+
