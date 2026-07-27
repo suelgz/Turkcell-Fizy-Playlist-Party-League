@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   ];
 
   const asOfInput = document.getElementById('asOf');
-  const refreshBtn = document.getElementById('refreshBtn');
   const playerList = document.getElementById('playerList');
   const playerCount = document.getElementById('playerCount');
   const searchInput = document.getElementById('userSearch');
@@ -456,7 +455,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   searchInput.addEventListener('input', () => renderPlayerList(filteredUsers()));
-  refreshBtn.addEventListener('click', refreshAll);
   asOfInput.addEventListener('change', refreshAll);
 
   refreshAll();
