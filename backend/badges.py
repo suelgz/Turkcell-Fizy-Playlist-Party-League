@@ -1,6 +1,10 @@
-from dataclasses import dataclass
+﻿from dataclasses import dataclass
 from typing import List
 import datetime
+import re
+
+from .challenge_engine import safe_eval_condition
+from .points_ledger import get_total_points
 
 @dataclass
 class BadgeAward:
@@ -10,12 +14,8 @@ class BadgeAward:
 
 def award_badges(users: List, badges: List, ledger: List) -> List[BadgeAward]:
     """Award badges based on total points."""
-    from challenge_engine import safe_eval_condition
-    from points_ledger import get_total_points
-    
     awards = []
 
-    import re
     def get_threshold(badge):
         match = re.search(r'>=\s*(\d+)', badge.condition)
         return int(match.group(1)) if match else 0
@@ -32,3 +32,4 @@ def award_badges(users: List, badges: List, ledger: List) -> List[BadgeAward]:
              
     
     return awards
+

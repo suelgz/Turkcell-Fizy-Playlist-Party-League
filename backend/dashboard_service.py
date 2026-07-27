@@ -1,11 +1,11 @@
-from collections import Counter
+﻿from collections import Counter
 
-from analytics_service import build_platform_stats, resolve_as_of_date, activities_until
-from data_loader import load_data
-from insights import build_platform_insights
-from metrics import compute_genre_breakdown, compute_user_trend
-from points_ledger import summarize_ledger
-from process_system import process_system
+from .analytics_service import build_platform_stats, resolve_as_of_date, activities_until
+from .data_loader import load_data
+from .insights import build_platform_insights
+from .metrics import compute_genre_breakdown, compute_user_trend
+from .points_ledger import summarize_ledger
+from .process_system import process_system
 
 
 BADGE_TIERS = {
@@ -232,3 +232,4 @@ def build_user_detail(user_id, as_of_date=None) -> dict:
         'genres': compute_genre_breakdown(user_id, activities, resolved_date),
         'insights': _build_player_insights(user_id, user, activities, results, resolved_date),
     }
+
